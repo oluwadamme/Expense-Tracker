@@ -16,6 +16,12 @@ class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
   final amountController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ExpenseData>(context).getAllExpense();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple.shade200,

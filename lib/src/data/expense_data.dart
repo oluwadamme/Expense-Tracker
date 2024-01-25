@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:expense_tracker/src/data/hive_database.dart';
 import 'package:expense_tracker/src/model/expense_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,21 +7,26 @@ class ExpenseData extends Cubit<List<ExpenseModel>> {
   List<ExpenseModel> overallExpenseList = [];
 
   ExpenseData() : super(<ExpenseModel>[]);
-
+  final hiveDB = HiveDatabase();
   // get all expenses
   List<ExpenseModel> getAllExpense() {
+    final data = hiveDB.readData();
+    overallExpenseList = data;
+    emit(overallExpenseList);
     return overallExpenseList;
   }
 
   //add expense to list
   void addExpense(ExpenseModel expense) {
     overallExpenseList.add(expense);
+    hiveDB.saveData(overallExpenseList);
     emit(overallExpenseList);
   }
 
   // delete expense to list
   void deleteExpense(ExpenseModel expense) {
     overallExpenseList.remove(expense);
+    hiveDB.saveData(overallExpenseList);
     emit(overallExpenseList);
   }
 

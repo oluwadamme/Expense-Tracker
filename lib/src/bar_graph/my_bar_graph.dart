@@ -12,7 +12,7 @@ class MyBarGraph extends StatelessWidget {
     barData.intializeBarData();
     return BarChart(
       BarChartData(
-        maxY: maxY,
+        maxY: maxY ?? 100,
         minY: 0,
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -40,10 +40,12 @@ class MyBarGraph extends StatelessWidget {
                       topLeft: Radius.circular(4),
                       topRight: Radius.circular(4),
                     ),
+                    fromY: 0,
                     backDrawRodData: BackgroundBarChartRodData(
                       show: true,
                       color: Colors.deepPurple.shade300,
                       toY: maxY,
+                      fromY: 0,
                     ),
                   )
                 ],
