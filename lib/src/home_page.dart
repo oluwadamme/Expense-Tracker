@@ -1,5 +1,6 @@
 import 'package:expense_tracker/src/data/expense_data.dart';
 import 'package:expense_tracker/src/model/expense_model.dart';
+import 'package:expense_tracker/src/widgets/expense_summary.dart';
 import 'package:expense_tracker/src/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,13 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<ExpenseData, List<ExpenseModel>>(builder: (context, state) {
         return Column(
           children: [
+            const SizedBox(height: 20),
             Expanded(
+              flex: 2,
+              child: ExpenseSummary(startOfWeek: context.read<ExpenseData>().startOfWeek() ?? DateTime.now()),
+            ),
+            Expanded(
+              flex: 3,
               child: ListView.separated(
                 itemBuilder: (context, index) => ExpenseTile(
                   expense: state[index],
