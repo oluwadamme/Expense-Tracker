@@ -4,6 +4,7 @@ import 'package:expense_tracker/src/widgets/expense_summary.dart';
 import 'package:expense_tracker/src/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,9 +40,8 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 3,
               child: ListView.separated(
-                itemBuilder: (context, index) => ExpenseTile(
-                  expense: state[index],
-                ),
+                itemBuilder: (context, index) =>
+                    ExpenseTile(expense: state[index], onPressed: (context) => deleteExpense(state[index])),
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const Divider(),
                 itemCount: state.length,
@@ -95,6 +95,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void saveExpense() {
+    if (nameController.text.trim().isEmpty ||
+        amountController.text.trim().isEmpty ||
+        double.parse(amountController.text.trim()) <= 0) return;
     final expense = ExpenseModel(
       name: nameController.text.trim(),
       amount: amountController.text.trim(),

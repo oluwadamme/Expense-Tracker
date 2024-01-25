@@ -62,7 +62,7 @@ class ExpenseSummary extends StatelessWidget {
                     friAmount: context.read<ExpenseData>().calculateDailyExpense()[friday] ?? 0,
                     satAmount: context.read<ExpenseData>().calculateDailyExpense()[saturday] ?? 0,
                   ),
-                  maxY: totalAmountWeekly() * 1.05,
+                  maxY: totalAmountWeekly() == 0 ? 100 : (totalAmountWeekly() * 1.05),
                 ),
               ),
             ],
