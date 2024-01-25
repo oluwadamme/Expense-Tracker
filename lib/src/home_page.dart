@@ -1,4 +1,8 @@
+import 'package:expense_tracker/src/data/expense_data.dart';
+import 'package:expense_tracker/src/model/expense_model.dart';
+import 'package:expense_tracker/src/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +22,15 @@ class _HomePageState extends State<HomePage> {
         onPressed: addExpenseDialog,
         child: const Icon(Icons.add),
       ),
+      body: BlocBuilder<ExpenseData, List<ExpenseModel>>(builder: (context, state) {
+        return ListView.separated(
+          itemBuilder: (context, index) => ExpenseTile(
+            expense: state[index],
+          ),
+          separatorBuilder: (context, index) => const Divider(),
+          itemCount: state.length,
+        );
+      }),
     );
   }
 
@@ -47,7 +60,7 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Cancel"),
           ),
           MaterialButton(
-            onPressed: () {},
+            onPressed: saveExpense,
             color: Colors.deepPurple.shade400,
             child: const Text(
               "Save",
@@ -57,5 +70,22 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void saveExpense() {
+    final expense = ExpenseModel(
+      name: nameController.text.trim(),
+      amount: amountController.text.trim(),
+      dateTime: DateTime.now(),
+    );
+    context.read<ExpenseData>().addExpense(expense);
+    Navigator.pop(context);
+    clear();
+    setState(() {});
+  }
+
+  void clear() {
+    nameController.clear();
+    amountController.clear();
   }
 }

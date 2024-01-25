@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:expense_tracker/src/model/expense_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExpenseData extends BlocBase {
+class ExpenseData extends Cubit<List<ExpenseModel>> {
   // list of all expenses
   List<ExpenseModel> overallExpenseList = [];
 
-  ExpenseData(super.state);
+  ExpenseData() : super(<ExpenseModel>[]);
 
   // get all expenses
   List<ExpenseModel> getAllExpense() {
@@ -15,11 +17,13 @@ class ExpenseData extends BlocBase {
   //add expense to list
   void addExpense(ExpenseModel expense) {
     overallExpenseList.add(expense);
+    emit(overallExpenseList);
   }
 
   // delete expense to list
   void deleteExpense(ExpenseModel expense) {
     overallExpenseList.remove(expense);
+    emit(overallExpenseList);
   }
 
   // get weekday

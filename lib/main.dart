@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ExpenseData(context),
+      create: (context) => ExpenseData(),
       child: MaterialApp(
         title: 'Expense Tracker',
         theme: ThemeData(
