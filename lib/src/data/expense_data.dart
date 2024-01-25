@@ -1,8 +1,11 @@
 import 'package:expense_tracker/src/model/expense_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExpenseData {
+class ExpenseData extends BlocBase {
   // list of all expenses
   List<ExpenseModel> overallExpenseList = [];
+
+  ExpenseData(super.state);
 
   // get all expenses
   List<ExpenseModel> getAllExpense() {
