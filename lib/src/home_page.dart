@@ -59,10 +59,13 @@ class _HomePageState extends State<HomePage> {
             // expense name
             TextFormField(
               controller: nameController,
+              decoration: const InputDecoration(hintText: "Expense name", hintStyle: TextStyle(fontSize: 12)),
             ),
             // expense amount
             TextFormField(
               controller: amountController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(hintText: "Expense amount", hintStyle: TextStyle(fontSize: 12)),
             ),
           ],
         ),
