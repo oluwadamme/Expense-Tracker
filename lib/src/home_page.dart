@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<ExpenseData, List<ExpenseModel>>(builder: (context, state) {
         return Column(
           children: [
-            const SizedBox(height: 20),
             Expanded(
               flex: 2,
               child: ExpenseSummary(startOfWeek: context.read<ExpenseData>().startOfWeek() ?? DateTime.now()),
@@ -104,6 +103,11 @@ class _HomePageState extends State<HomePage> {
     context.read<ExpenseData>().addExpense(expense);
     Navigator.pop(context);
     clear();
+    setState(() {});
+  }
+
+  void deleteExpense(ExpenseModel expense) {
+    context.read<ExpenseData>().deleteExpense(expense);
     setState(() {});
   }
 
