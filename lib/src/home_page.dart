@@ -23,12 +23,19 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
       body: BlocBuilder<ExpenseData, List<ExpenseModel>>(builder: (context, state) {
-        return ListView.separated(
-          itemBuilder: (context, index) => ExpenseTile(
-            expense: state[index],
-          ),
-          separatorBuilder: (context, index) => const Divider(),
-          itemCount: state.length,
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) => ExpenseTile(
+                  expense: state[index],
+                ),
+                physics: const AlwaysScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: state.length,
+              ),
+            ),
+          ],
         );
       }),
     );
