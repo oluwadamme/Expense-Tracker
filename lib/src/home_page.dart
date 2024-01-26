@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 3,
               child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 itemBuilder: (context, index) =>
                     ExpenseTile(expense: state[index], onPressed: (context) => deleteExpense(state[index])),
                 physics: const AlwaysScrollableScrollPhysics(),

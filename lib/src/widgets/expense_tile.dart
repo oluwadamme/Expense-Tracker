@@ -18,6 +18,7 @@ class ExpenseTile extends StatelessWidget {
         )
       ]),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         title: Text(expense.name),
         trailing: Text("\$${expense.amount}"),
         subtitle: Text("${expense.dateTime.day} / ${expense.dateTime.month} / ${expense.dateTime.year}"),
