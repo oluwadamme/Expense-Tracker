@@ -4,7 +4,6 @@ import 'package:expense_tracker/src/widgets/expense_summary.dart';
 import 'package:expense_tracker/src/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
   final amountController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -39,14 +39,29 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               flex: 3,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                itemBuilder: (context, index) =>
-                    ExpenseTile(expense: state[index], onPressed: (context) => deleteExpense(state[index])),
-                physics: const AlwaysScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: state.length,
-              ),
+              child: state.isEmpty
+                  ? Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        decoration:
+                            BoxDecoration(color: Colors.deepPurple.shade100, borderRadius: BorderRadius.circular(8)),
+                        height: 100,
+                        width: double.maxFinite,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'No expense made yet',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      itemBuilder: (context, index) =>
+                          ExpenseTile(expense: state[index], onPressed: (context) => deleteExpense(state[index])),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: state.length,
+                    ),
             ),
           ],
         );
