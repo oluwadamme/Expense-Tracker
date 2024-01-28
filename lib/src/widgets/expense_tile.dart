@@ -1,6 +1,7 @@
 import 'package:expense_tracker/src/model/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 class ExpenseTile extends StatelessWidget {
   const ExpenseTile({super.key, required this.expense, required this.onPressed});
@@ -21,7 +22,7 @@ class ExpenseTile extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         title: Text(expense.name),
         trailing: Text("\$${expense.amount}"),
-        subtitle: Text("${expense.dateTime.day} / ${expense.dateTime.month} / ${expense.dateTime.year}"),
+        subtitle: Text(DateFormat('HH:mm:ss').format(expense.dateTime)),
       ),
     );
   }
