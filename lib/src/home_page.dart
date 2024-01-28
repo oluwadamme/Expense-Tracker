@@ -1,9 +1,14 @@
+import 'dart:developer';
+
+import 'package:collection/collection.dart';
 import 'package:expense_tracker/src/data/expense_data.dart';
 import 'package:expense_tracker/src/model/expense_model.dart';
 import 'package:expense_tracker/src/widgets/expense_summary.dart';
 import 'package:expense_tracker/src/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -56,17 +61,48 @@ class _HomePageState extends State<HomePage> {
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
-                      itemBuilder: (context, index) =>
-                          ExpenseTile(expense: state[index], onPressed: (context) => deleteExpense(state[index])),
+                      itemBuilder: (context, index) {
+                        List<Map<DateTime, List<ExpenseModel>>> groupedItems = state
+                            .groupListsBy(
+                                (ExpenseModel item) => (DateTime.parse(item.dateTime.toString().substring(0, 10))))
+                            .entries
+                            .map((entry) => {entry.key: entry.value})
+                            .toList();
+
+                        return StickyHeader(
+                          header: Text(DateFormat.yMMMMd().format(groupedItems[index].keys.first)),
+                          content: Column(
+                            children: [
+                              ...List.generate(
+                                groupedItems[index].values.first.length,
+                                (index2) => ExpenseTile(
+                                  expense: groupedItems[index].values.first[index2],
+                                  onPressed: (context) => deleteExpense(groupedItems[index].values.first[index2]),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
                       physics: const AlwaysScrollableScrollPhysics(),
                       separatorBuilder: (context, index) => const Divider(),
-                      itemCount: state.length,
+                      itemCount: getLenghtofGroupedExpenseList(state),
                     ),
             ),
           ],
         );
       }),
     );
+  }
+
+  int getLenghtofGroupedExpenseList(List<ExpenseModel> list) {
+    List<Map<DateTime, List<ExpenseModel>>> groupedItems = list
+        .groupListsBy((ExpenseModel item) => (DateTime.parse(item.dateTime.toString().substring(0, 10))))
+        .entries
+        .map((entry) => {entry.key: entry.value})
+        .toList();
+
+    return groupedItems.length;
   }
 
   void addExpenseDialog() {
