@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.deepPurple.shade200,
       floatingActionButton: FloatingActionButton(
-        onPressed: addExpenseDialog,
+        onPressed: () => addExpenseDialog(null),
         child: const Icon(Icons.add),
       ),
       body: BlocBuilder<ExpenseData, List<ExpenseModel>>(builder: (context, state) {
@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
                                 groupedItems[index].values.first.length,
                                 (index2) => ExpenseTile(
                                   expense: groupedItems[index].values.first[index2],
-                                  onPressed: (context) => deleteExpense(groupedItems[index].values.first[index2]),
+                                  onDelete: (context) => deleteExpense(groupedItems[index].values.first[index2]),
+                                  onUpdate: (context) => addExpenseDialog(groupedItems[index].values.first[index2]),
                                 ),
                               )
                             ],
@@ -105,7 +106,11 @@ class _HomePageState extends State<HomePage> {
     return groupedItems.length;
   }
 
-  void addExpenseDialog() {
+  void addExpenseDialog(ExpenseModel? expense) {
+    if (expense != null) {
+      nameController.text = expense.name;
+      amountController.text = expense.amount;
+    }
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -134,7 +139,7 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Cancel"),
           ),
           MaterialButton(
-            onPressed: saveExpense,
+            onPressed: () => saveExpense(expense),
             color: Colors.deepPurple.shade400,
             child: const Text(
               "Save",
@@ -146,16 +151,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void saveExpense() {
+  void saveExpense(ExpenseModel? expenseModel) {
     if (nameController.text.trim().isEmpty ||
         amountController.text.trim().isEmpty ||
         double.parse(amountController.text.trim()) <= 0) return;
     final expense = ExpenseModel(
       name: nameController.text.trim(),
       amount: amountController.text.trim(),
-      dateTime: DateTime.now(),
+      dateTime: expenseModel == null ? DateTime.now() : expenseModel.dateTime,
     );
-    context.read<ExpenseData>().addExpense(expense);
+    if (expenseModel == null) {
+      context.read<ExpenseData>().addExpense(expense);
+    } else {
+      context.read<ExpenseData>().updateExpense(expense);
+    }
+
     Navigator.pop(context);
     clear();
     setState(() {});

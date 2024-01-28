@@ -4,19 +4,25 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseTile extends StatelessWidget {
-  const ExpenseTile({super.key, required this.expense, required this.onPressed});
+  const ExpenseTile({super.key, required this.expense, required this.onDelete, required this.onUpdate});
   final ExpenseModel expense;
-  final Function(BuildContext)? onPressed;
+  final Function(BuildContext)? onDelete;
+  final Function(BuildContext)? onUpdate;
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
       endActionPane: ActionPane(motion: const StretchMotion(), children: [
         SlidableAction(
-          onPressed: onPressed,
+          onPressed: onUpdate,
+          icon: Icons.edit,
+          backgroundColor: Colors.purple,
+        ),
+        SlidableAction(
+          onPressed: onDelete,
           icon: Icons.delete,
           backgroundColor: Colors.red,
-        )
+        ),
       ]),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
