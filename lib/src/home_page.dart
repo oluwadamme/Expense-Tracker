@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:expense_tracker/src/data/expense_data.dart';
@@ -70,7 +69,10 @@ class _HomePageState extends State<HomePage> {
                             .toList();
 
                         return StickyHeader(
-                          header: Text(DateFormat.yMMMMd().format(groupedItems[index].keys.first)),
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(DateFormat.yMMMMd().format(groupedItems[index].keys.first)),
+                          ),
                           content: Column(
                             children: [
                               ...List.generate(
