@@ -1,6 +1,8 @@
 import 'package:expense_tracker/src/model/expense_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ConfigService {
   ConfigService._();
@@ -14,9 +16,9 @@ class ConfigService {
 
   static Future<void> initSupabase() async {
     await Supabase.initialize(
-      url: 'https://uoidzlmpuuxnolfiwozk.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvaWR6bG1wdXV4bm9sZml3b3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcxNTM5OTUsImV4cCI6MjAyMjcyOTk5NX0.GE0Q2gpUbNGjPb8YCN66CtYuhYxUR535AHC4flkbjp0',
+      url: DotEnv().env['SUPABASE_URL'] ?? "",
+      debug: kDebugMode,
+      anonKey: DotEnv().env['SUPABASE_ANON_KEY'] ?? "",
     );
   }
 }
