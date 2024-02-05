@@ -16,9 +16,9 @@ class ConfigService {
 
   static Future<void> initSupabase() async {
     await Supabase.initialize(
-      url: DotEnv().env['SUPABASE_URL'] ?? "",
+      url: dotenv.env['SUPABASE_URL'] ?? "",
       debug: kDebugMode,
-      anonKey: DotEnv().env['SUPABASE_ANON_KEY'] ?? "",
+      anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? "",
     );
   }
 }
