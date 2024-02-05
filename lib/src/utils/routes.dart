@@ -1,4 +1,5 @@
 import 'package:expense_tracker/src/screens/home_page.dart';
+import 'package:expense_tracker/src/screens/login_page.dart';
 import 'package:expense_tracker/src/screens/signup_page.dart';
 import 'package:expense_tracker/src/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,12 @@ final GoRouter router = GoRouter(
       path: SignUpPage.routeName,
       builder: (BuildContext context, GoRouterState state) {
         return const SignUpPage();
+      },
+    ),
+    GoRoute(
+      path: LoginPage.routeName,
+      builder: (BuildContext context, GoRouterState state) {
+        return const LoginPage();
       },
     ),
   ],
