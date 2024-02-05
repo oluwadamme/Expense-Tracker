@@ -8,17 +8,26 @@ class SupabaseAuthService extends Cubit<SupabaseAuthState> {
 
   final supabase = Supabase.instance.client;
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String name,
+    required String userName,
+  }) async {
     emit(SupabaseAuthState(loading: true));
     try {
-      final result = await supabase.auth.signUp(password: password, email: email);
+      final result =
+          await supabase.auth.signUp(password: password, email: email, data: {'fullname': name, "username": userName});
       emit(SupabaseAuthState(loading: false, data: result));
     } catch (e) {
       emit(SupabaseAuthState(loading: false, data: null, error: e.toString()));
     }
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
     emit(SupabaseAuthState(loading: true));
     try {
       final result = await supabase.auth.signInWithPassword(password: password, email: email);
