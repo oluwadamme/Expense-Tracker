@@ -1,7 +1,7 @@
 import 'package:expense_tracker/src/model/supabase_auth_state.dart';
-import 'package:expense_tracker/src/screens/home_page.dart';
 import 'package:expense_tracker/src/screens/login_page.dart';
 import 'package:expense_tracker/src/service/supabase_service.dart';
+import 'package:expense_tracker/src/widgets/loading_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: BlocConsumer<SupabaseAuthService, SupabaseAuthState>(
         listener: (context, state) {
           if (state.data != null) {
-            context.go(HomePage.routeName);
+            context.go(LoginPage.routeName);
             return;
           }
           if (state.error != null) {
@@ -141,7 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         signup();
                       }
                     },
-                    child: state.loading ? const CircularProgressIndicator.adaptive() : const Text('Sign Up'),
+                    child: state.loading ? const LoadingUI() : const Text('Sign Up'),
                   ),
                   const SizedBox(height: 16.0),
                   TextButton(

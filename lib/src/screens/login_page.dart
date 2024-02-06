@@ -2,6 +2,7 @@ import 'package:expense_tracker/src/model/supabase_auth_state.dart';
 import 'package:expense_tracker/src/screens/home_page.dart';
 import 'package:expense_tracker/src/screens/signup_page.dart';
 import 'package:expense_tracker/src/service/supabase_service.dart';
+import 'package:expense_tracker/src/widgets/loading_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -102,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                         signin();
                       }
                     },
-                    child: state.loading ? const CircularProgressIndicator.adaptive() : const Text('Login'),
+                    child: state.loading ? const LoadingUI() : const Text('Login'),
                   ),
                   const SizedBox(height: 16.0),
                   TextButton(
