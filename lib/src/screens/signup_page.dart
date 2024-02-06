@@ -44,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Fluttertoast.showToast(
             msg: state.error.toString(),
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
             textColor: Colors.white,
