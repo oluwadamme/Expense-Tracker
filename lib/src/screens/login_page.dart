@@ -1,5 +1,6 @@
 import 'package:expense_tracker/src/model/supabase_auth_state.dart';
-import 'package:expense_tracker/src/screens/login_page.dart';
+import 'package:expense_tracker/src/screens/home_page.dart';
+import 'package:expense_tracker/src/screens/signup_page.dart';
 import 'package:expense_tracker/src/service/supabase_service.dart';
 import 'package:expense_tracker/src/widgets/loading_ui.dart';
 import 'package:flutter/material.dart';
@@ -7,38 +8,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
-  static const String routeName = "/signup";
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+  static const String routeName = "/login";
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-  Future<void> signup() async {
+  Future<void> signin() async {
     final bloc = BlocProvider.of<SupabaseAuthService>(context);
-    await bloc.signUp(
+    await bloc.signIn(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
-      name: fullNameController.text.trim(),
-      userName: usernameController.text.trim(),
     );
   }
 
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple.shade200,
-      resizeToAvoidBottomInset: false,
       body: BlocConsumer<SupabaseAuthService, SupabaseAuthState>(
         listener: (context, state) {
           if (state.data != null) {
-            context.go(LoginPage.routeName);
+            context.go(HomePage.routeName);
             return;
           }
           if (state.error != null) {
@@ -55,11 +51,10 @@ class _SignUpPageState extends State<SignUpPage> {
           }
         },
         builder: (context, state) {
-          return Form(
-            key: formKey,
-            autovalidateMode: AutovalidateMode.always,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,56 +94,29 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: fullNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) => setState(() {}),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "name field is required";
-                      }
-                      if (value.split(" ").length < 2) {
-                        return "enter full name";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) => setState(() {}),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "name field is required";
-                      }
-
-                      return null;
-                    },
-                  ),
                   const SizedBox(height: 32.0),
                   ElevatedButton(
                     onPressed: () {
+                      // Implement your login logic here
                       FocusScope.of(context).unfocus();
                       if (formKey.currentState!.validate()) {
-                        signup();
+                        signin();
                       }
                     },
-                    child: state.loading ? const LoadingUI() : const Text('Sign Up'),
+                    child: state.loading ? const LoadingUI() : const Text('Login'),
                   ),
                   const SizedBox(height: 16.0),
                   TextButton(
                     onPressed: () {
-                      context.go(LoginPage.routeName);
+                      // Implement your forgot password logic here
                     },
-                    child: const Text('Login'),
+                    child: const Text('Forgot Password?'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.go(SignUpPage.routeName);
+                    },
+                    child: const Text('Register'),
                   ),
                 ],
               ),
