@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expense_tracker/src/model/supabase_auth_state.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +22,11 @@ class SupabaseAuthService extends Cubit<SupabaseAuthState> {
           await supabase.auth.signUp(password: password, email: email, data: {'fullname': name, "username": userName});
       response = result;
       emit(SupabaseAuthState(loading: false, data: result));
-    } catch (e) {
+    } on SocketException catch (e) {
+      emit(SupabaseAuthState(loading: false, data: null, error: e.message.toString()));
+    } on AuthException catch (e) {
+      emit(SupabaseAuthState(loading: false, data: null, error: e.message.toString()));
+    } on Exception catch (e) {
       emit(SupabaseAuthState(loading: false, data: null, error: e.toString()));
     }
   }
@@ -34,7 +40,11 @@ class SupabaseAuthService extends Cubit<SupabaseAuthState> {
       final result = await supabase.auth.signInWithPassword(password: password, email: email);
       response = result;
       emit(SupabaseAuthState(loading: false, data: result));
-    } catch (e) {
+    } on SocketException catch (e) {
+      emit(SupabaseAuthState(loading: false, data: null, error: e.message.toString()));
+    } on AuthException catch (e) {
+      emit(SupabaseAuthState(loading: false, data: null, error: e.message.toString()));
+    } on Exception catch (e) {
       emit(SupabaseAuthState(loading: false, data: null, error: e.toString()));
     }
   }
